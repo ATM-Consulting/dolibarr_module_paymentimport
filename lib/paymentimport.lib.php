@@ -145,11 +145,14 @@ function _setPayment($user,$db,$conf,$langs)
 		    
 		}
 		else {
-			$TFactureNotFound[] = $facture_ref;
+			$TFactureNotFound[] = $langs->transnoentitiesnoconv('paymentimport_errorfactnotfound', $facture_ref);
 			$nb_facture_not_found++;
 		}
 	}
 	
 	if ($nb_facture_not_found > 0) setEventMessages($langs->trans('paymentimport_nb_facture_not_found', $nb_facture_not_found), array(), 'errors');
 	if ($nb_payment > 0) setEventMessages($langs->trans('paymentimport_nb_payment', $nb_payment), array());
+	
+	$_SESSION['TFactureNotFound'] = $TFactureNotFound;
+	$_SESSION['TPaimentError'] = $TPaimentError;
 }

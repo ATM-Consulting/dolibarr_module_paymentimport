@@ -26,6 +26,7 @@ DatePayment=Date paiement
 Num=Numéro
 Note=Note
 
-paymentimport_errorpayment
+paymentimport_errorpayment=Erreur paiement sur la facture [%s], rib [%s], montant : %s
+paymentimport_errorfactnotfound=Erreur facture non trouvée : %s
 paymentimport_nb_facture_not_found=Nombre de facture non trouvée : %s
 paymentimport_nb_payment=Nombre de paiment enregistré : %s

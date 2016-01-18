@@ -35,6 +35,7 @@
 			default:
 				_printHeader($langs,$user);
 				_printFormFile($user,$db,$conf,$langs);
+				_printErrorFromImportConfirm();
 				_printFooter();
 				
 				break;
@@ -127,3 +128,27 @@
 		print '<div class="tabsAction"><div class="center divButAction"><input class="button" type="submit" value="'.$langs->trans('CreatePayment').'" /></div></div>';
 		print '</form>';
 	}
+
+	function _printErrorFromImportConfirm()
+	{
+		global $langs;
+		
+		$TFactureNotFound = $_SESSION['TFactureNotFound'];
+		$TPaimentError = $_SESSION['TPaimentError'];
+		
+		if (!empty($TFactureNotFound))
+		{
+			print '<div class="error" style="padding:2px;">';
+			foreach ($TFactureNotFound as $error) print $error.'<br />';
+			print '</div>';	
+		}
+
+		if (!empty($TPaimentError))
+		{
+			print '<div class="error" style="margin-top:5px;padding:2px;">';
+			foreach ($TPaimentError as $error) print $error.'<br />';
+			print '</div>';	
+		}
+		
+	}
+
