@@ -5,3 +5,27 @@ ATMAbout = Ce module a été développé par <a href="http://www.atm-consulting.
 
 paymentImportSetup = Configuration du module paymentImport
 paymentImportAbout = A propos du module paymentImport
+
+PaymentImport=Import paiements
+paymentimport_numberoflineskipped=Nombre de ligne à ignorer
+paymentimport_codeclient_substr=A combien de caractère commence le code client 
+FileToImport=Fichier à importer
+paymentimport_typepayment=Mode de règlement
+paymentimport_bankaccount=Compte à créditer
+paymentimport_default_reglement=Mode de règlement par défaut (vide pour reprendre le type de règlement depuis la facture)
+paymentimport_forcedatepaye_today=Force la date du règlement à la date du jour
+Load=Charger
+CreatePayment=Créer paiement
+
+RefFacture=Référence facture
+Company=Société
+CodeClient=Code client
+Rib=Rib
+AmountPayment=Montant paiement
+DatePayment=Date paiement
+Num=Numéro
+Note=Note
+
+paymentimport_errorpayment
+paymentimport_nb_facture_not_found=Nombre de facture non trouvée : %s
+paymentimport_nb_payment=Nombre de paiment enregistré : %s

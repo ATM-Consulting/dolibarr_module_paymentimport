@@ -106,6 +106,7 @@ print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
 
 
 // Example with a yes / no select
+/*
 $var=!$var;
 print '<tr '.$bc[$var].'>';
 print '<td>'.$langs->trans("ParamLabel").'</td>';
@@ -115,6 +116,71 @@ print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 print '<input type="hidden" name="action" value="set_CONSTNAME">';
 print $form->selectyesno("CONSTNAME",$conf->global->CONSTNAME,1);
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+*/
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("paymentimport_numberoflineskipped").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_PAYMENTIMPORT_DEFAULT_NUMBER_OF_LINE_SKIPPED">';
+print '<input type="text" name="PAYMENTIMPORT_DEFAULT_NUMBER_OF_LINE_SKIPPED" value="'.$conf->global->PAYMENTIMPORT_DEFAULT_NUMBER_OF_LINE_SKIPPED.'" size="5" />&nbsp;';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("paymentimport_codeclient_substr").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_PAYMENTIMPORT_CODECLIENT_SUBSTR">';
+print '<input type="text" name="PAYMENTIMPORT_CODECLIENT_SUBSTR" value="'.$conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR.'" size="5" />&nbsp;';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("paymentimport_default_reglement").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_PAYMENTIMPORT_DEFAULT_REGLEMENT_CODE">';
+$form->select_types_paiements($conf->global->PAYMENTIMPORT_DEFAULT_REGLEMENT_CODE,'PAYMENTIMPORT_DEFAULT_REGLEMENT_CODE','',2,0);
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("paymentimport_default_reglement").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_PAYMENTIMPORT_DEFAULT_BANK_ACOUNT">';
+print $form->select_comptes($conf->global->PAYMENTIMPORT_DEFAULT_BANK_ACOUNT, 'PAYMENTIMPORT_DEFAULT_BANK_ACOUNT', 0);
+print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("paymentimport_forcedatepaye_today").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_PAYMENTIMPORT_FORCE_DATE_TODAY">';
+print $form->selectyesno("PAYMENTIMPORT_FORCE_DATE_TODAY",$conf->global->PAYMENTIMPORT_FORCE_DATE_TODAY,1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';

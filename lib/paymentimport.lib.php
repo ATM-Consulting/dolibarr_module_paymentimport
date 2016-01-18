@@ -53,3 +53,103 @@ function paymentimportAdminPrepareHead()
 
     return $head;
 }
+
+function _parseFile(&$conf)
+{
+	$TPayment = array();
+	$skip = GETPOST('skip', 'int');
+	$file = $_FILES['file'];
+	
+	if ($file['type'] == 'application/csv')
+	{
+		$TPayment = array();
+		$handle = fopen($file['tmp_name'], 'r');
+		$i=0;
+		while ($line = fgetcsv($handle, 4096, ';'))
+		{
+			$i++;
+			if ($i <= $skip) continue;
+			
+			$TPayment[] = array(
+				'code_client' => !empty($conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR) ? substr($line[0], $conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR-1) : $line[0]
+				,'company_name' => $line[1]
+				,'facture_ref' => $line[2]
+				,'rib' => $line[3]
+				,'amount' => price2num($line[4])
+				,'date_creation' => $line[8]
+				,'num_payment' => $line[10]
+				,'note' => $line[11]
+			);
+			
+		}
+		fclose($handle);	
+	}
+
+	return $TPayment;
+}
+
+function _setPayment($user,$db,$conf,$langs)
+{
+	$TPayment = GETPOST('payment', 'array');
+	$fk_bank = GETPOST('fk_bank', 'int');
+	if (empty($fk_bank)) {
+		setEventMessages($langs->transnoentitiesnoconv('ErrorPaymentImportNoBankSelected'), array(), 'errors');
+		return;
+	}
+	
+	$mode_reglement = GETPOST('paiementcode', 'alpha');
+	
+	$TFactureNotFound = $TPaimentError = array();
+	$nb_facture_not_found = $nb_payment = 0;
+	foreach ($TPayment as $TInfoPayment)
+	{
+		$facture_ref = trim($TInfoPayment['facture_ref']);
+		$rib = trim($TInfoPayment['rib']);
+		$amount = price2num($TInfoPayment['amount']);
+		$date_creation = trim($TInfoPayment['date_creation']);
+		$num_payment = trim($TInfoPayment['num_payment']);
+		$note = trim($TInfoPayment['note']);
+		
+		if ($amount <= 0) continue;
+		
+		$facture = new Facture($db);
+		if ($facture->fetch(null, $facture_ref) > 0)
+		{
+			if (!empty($conf->global->PAYMENTIMPORT_FORCE_DATE_TODAY)) $datepaye = dol_mktime(date('H'), date('m'), date('s'), date('m'), date('d'), date('Y'));
+			else 
+			{
+				$date_creation = explode('/', $date_creation);
+				$datepaye = dol_mktime(12, 0, 0, $date_creation[1], $date_creation[0], $date_creation[2]);
+			}
+			
+			if (empty($mode_reglement)) $paiementcode = $facture->mode_reglement_code;
+			else $paiementcode = $mode_reglement;
+			
+			// Creation of payment line
+		    $paiement = new Paiement($db);
+		    $paiement->datepaye     = $datepaye;
+		    $paiement->amounts      = array($facture->id => $amount);   // Array with all payments dispatching
+		    $paiement->paiementid   = dol_getIdFromCode($db,$paiementcode,'c_paiement');
+		    $paiement->num_paiement = $num_payment;
+		    $paiement->note         = $note;
+			
+	    	$paiement_id = $paiement->create($user, 1);
+	    	if ($paiement_id > 0)
+	        {
+	        	$nb_payment++;
+	        }
+			else
+			{
+				$TPaimentError[] = $langs->transnoentitiesnoconv('paymentimport_errorpayment', $facture_ref, $rib, $amount);
+			}
+		    
+		}
+		else {
+			$TFactureNotFound[] = $facture_ref;
+			$nb_facture_not_found++;
+		}
+	}
+	
+	if ($nb_facture_not_found > 0) setEventMessages($langs->trans('paymentimport_nb_facture_not_found', $nb_facture_not_found), array(), 'errors');
+	if ($nb_payment > 0) setEventMessages($langs->trans('paymentimport_nb_payment', $nb_payment), array());
+}

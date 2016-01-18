@@ -52,7 +52,7 @@ class modpaymentImport extends DolibarrModules
 
 		// Family can be 'crm','financial','hr','projects','products','ecm','technic','other'
 		// It is used to group modules in module setup page
-		$this->family = "ATM";
+		$this->family = "financial";
 		// Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
 		$this->name = preg_replace('/^mod/i','',get_class($this));
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
@@ -184,7 +184,21 @@ class modpaymentImport extends DolibarrModules
 		// Main menu entries
 		$this->menu = array();			// List of menus to add
 		$r=0;
-
+		$this->menu[$r]=array(	
+			'fk_menu'=>'fk_mainmenu=accountancy,fk_leftmenu=customers_bills',			                // Put 0 if this is a top menu
+			'type'=>'left',			                // This is a Top menu entry
+			'titre'=>$langs->trans('PaymentImport'),
+			'mainmenu'=>'customers_bills',
+			'leftmenu'=>'customers_bills',
+			'url'=>'/paymentimport/card.php',
+			'langs'=>'paymentimport@paymentimport',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'position'=>100,
+			'enabled'=>'$conf->paymentimport->enabled',	// Define condition to show or hide menu entry. Use '$conf->paymentimport->enabled' if entry must be visible if module is enabled.
+			'perms'=>'&& $user->rights->facture->paiement',			                // Use 'perms'=>'$user->rights->paymentimport->level1->level2' if you want your menu with a permission rules
+			'target'=>'',
+			'user'=>2	// 0=Menu for internal users, 1=external users, 2=both
+		);				                
+		$r++;
 		// Add here entries to declare new menus
 		//
 		// Example to declare a new Top Menu entry and its Left menu entry:
