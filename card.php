@@ -7,6 +7,7 @@
 	dol_include_once('/compta/facture/class/facture.class.php');
 	dol_include_once('/compta/paiement/class/paiement.class.php');
 
+	$langs->load('banks');
 	$langs->load('payment@payment');
 	
 	_action();
@@ -111,7 +112,7 @@
 		{
 			$var=!$var;
 			print '<tr '.$bc[$var].'>';
-			print '<td><input type="text" name="payment['.$i.'][facture_ref]" value="'.$TInfo['facture_ref'].'" /></td>';
+			print '<td><input type="text" name="payment['.$i.'][facture_ref]" value="'.$TInfo['facture_ref'].'" /> - <a target="_blank" href="'.dol_buildpath('/compta/facture.php?ref='.$TInfo['facture_ref'],1).'">v</a></td>';
 			print '<td>'.$TInfo['company_name'].'</td>';
 			print '<td>'.$TInfo['code_client'].'</td>';
 			print '<td>'.$TInfo['rib'].'</td>';
@@ -135,7 +136,8 @@
 		
 		$TFactureNotFound = $_SESSION['TFactureNotFound'];
 		$TPaimentError = $_SESSION['TPaimentError'];
-		
+		$TWriteBankFail = $_SESSION['TWriteBankFail'];
+
 		if (!empty($TFactureNotFound))
 		{
 			print '<div class="error" style="padding:2px;">';
@@ -149,6 +151,12 @@
 			foreach ($TPaimentError as $error) print $error.'<br />';
 			print '</div>';	
 		}
-		
+
+		if (!empty($TWriteBankFail))
+		{
+			print '<div class="error" style="margin-top:5px;padding:2px;">';
+			foreach ($TWriteBankFail as $error) print $error.'<br />';
+			print '</div>';	
+		}
 	}
 

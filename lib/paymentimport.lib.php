@@ -60,7 +60,7 @@ function _parseFile(&$conf)
 	$skip = GETPOST('skip', 'int');
 	$file = $_FILES['file'];
 	
-	if ($file['type'] == 'application/csv')
+	if ($file['type'] == 'application/csv' || $file['type'] == 'text/csv')
 	{
 		$TPayment = array();
 		$handle = fopen($file['tmp_name'], 'r');
@@ -93,14 +93,16 @@ function _setPayment($user,$db,$conf,$langs)
 	$TPayment = GETPOST('payment', 'array');
 	$fk_bank = GETPOST('fk_bank', 'int');
 	if (empty($fk_bank)) {
-		setEventMessages($langs->transnoentitiesnoconv('ErrorPaymentImportNoBankSelected'), array(), 'errors');
+		if (function_exists('setEventMessages')) setEventMessages($langs->transnoentitiesnoconv('ErrorPaymentImportNoBankSelected'), array(), 'errors');
+		else setEventMessage($langs->transnoentitiesnoconv('ErrorPaymentImportNoBankSelected'), 'errors');
+		
 		return;
 	}
 	
 	$mode_reglement = GETPOST('paiementcode', 'alpha');
 	
-	$TFactureNotFound = $TPaimentError = array();
-	$nb_facture_not_found = $nb_payment = 0;
+	$TFactureNotFound = $TPaimentError = $TWriteBankFail = array();
+	$nb_facture_not_found = $nb_payment = $nb_writebank = 0;
 	foreach ($TPayment as $TInfoPayment)
 	{
 		$facture_ref = trim($TInfoPayment['facture_ref']);
@@ -137,6 +139,13 @@ function _setPayment($user,$db,$conf,$langs)
 	    	if ($paiement_id > 0)
 	        {
 	        	$nb_payment++;
+				
+				$label='(CustomerInvoicePayment)';
+		        $result=$paiement->addPaymentToBank($user,'payment',$label,$fk_bank,'','');
+				
+				if ($result > 0) $nb_writebank++;
+				else $TWriteBankFail[] = $langs->transnoentitiesnoconv('paymentimport_errorwritebank', $facture_ref);
+				
 	        }
 			else
 			{
@@ -150,9 +159,23 @@ function _setPayment($user,$db,$conf,$langs)
 		}
 	}
 	
-	if ($nb_facture_not_found > 0) setEventMessages($langs->trans('paymentimport_nb_facture_not_found', $nb_facture_not_found), array(), 'errors');
-	if ($nb_payment > 0) setEventMessages($langs->trans('paymentimport_nb_payment', $nb_payment), array());
+	if ($nb_facture_not_found > 0) 
+	{
+		if (function_exists('setEventMessages')) setEventMessages($langs->trans('paymentimport_nb_facture_not_found', $nb_facture_not_found), array(), 'errors');
+		else setEventMessage($langs->trans('paymentimport_nb_facture_not_found', $nb_facture_not_found), 'errors');
+	}
+	if ($nb_payment > 0) 
+	{
+		if (function_exists('setEventMessages')) setEventMessages($langs->trans('paymentimport_nb_payment', $nb_payment), array());
+		else setEventMessage($langs->trans('paymentimport_nb_payment', $nb_payment));
+	}
+	if ($nb_writebank > 0)
+	{
+		if (function_exists('setEventMessages')) setEventMessages($langs->trans('paymentimport_nb_writebank', $nb_writebank), array());
+		else setEventMessage($langs->trans('paymentimport_nb_writebank', $nb_writebank));
+	}
 	
 	$_SESSION['TFactureNotFound'] = $TFactureNotFound;
 	$_SESSION['TPaimentError'] = $TPaimentError;
+	$_SESSION['TWriteBankFail'] = $TWriteBankFail;
 }
