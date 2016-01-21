@@ -161,7 +161,7 @@ print '</td></tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'>';
-print '<td>'.$langs->trans("paymentimport_default_reglement").'</td>';
+print '<td>'.$langs->trans("paymentimport_default_bank").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';

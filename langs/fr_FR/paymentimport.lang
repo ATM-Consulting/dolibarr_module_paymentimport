@@ -13,6 +13,7 @@ FileToImport=Fichier à importer
 paymentimport_typepayment=Mode de règlement
 paymentimport_bankaccount=Compte à créditer
 paymentimport_default_reglement=Mode de règlement par défaut (vide pour reprendre le type de règlement depuis la facture)
+paymentimport_default_bank=Banque par défaut
 paymentimport_forcedatepaye_today=Force la date du règlement à la date du jour
 Load=Charger
 CreatePayment=Créer paiement
