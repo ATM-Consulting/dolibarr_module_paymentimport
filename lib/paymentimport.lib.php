@@ -67,6 +67,8 @@ function _parseFile(&$conf)
 		$i=0;
 		while ($line = fgetcsv($handle, 4096, ';'))
 		{
+			if (mb_detect_encoding($line[1], 'UTF-8', true) != 'UTF-8') $line[1] = utf8_encode($line[1]);
+			
 			$i++;
 			if ($i <= $skip) continue;
 			

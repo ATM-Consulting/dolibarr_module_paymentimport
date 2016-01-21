@@ -20,6 +20,8 @@
 		
 		switch ($action) {
 			case 'import':
+				ini_set("auto_detect_line_endings", true);
+				
 				$TPayment = _parseFile($conf);
 				_printHeader($langs,$user);
 				_printFormFile($user,$db,$conf,$langs);
