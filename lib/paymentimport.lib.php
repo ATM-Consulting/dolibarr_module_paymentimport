@@ -60,8 +60,8 @@ function _parseFile(&$conf)
 	$skip = GETPOST('skip', 'int');
 	$file = $_FILES['file'];
 	
-	if ($file['type'] == 'application/csv' || $file['type'] == 'text/csv')
-	{
+	/*if ($file['type'] == 'application/csv' || $file['type'] == 'text/csv')
+	{*/
 		$TPayment = array();
 		$handle = fopen($file['tmp_name'], 'r');
 		$i=0;
@@ -85,7 +85,7 @@ function _parseFile(&$conf)
 			
 		}
 		fclose($handle);	
-	}
+	//}
 
 	return $TPayment;
 }
