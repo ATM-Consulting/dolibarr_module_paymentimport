@@ -67,17 +67,22 @@ function _parseFile(&$conf)
 		$i=0;
 		while ($line = fgetcsv($handle, 4096, ';'))
 		{
-			if (mb_detect_encoding($line[1], 'UTF-8', true) != 'UTF-8') $line[1] = utf8_encode($line[1]);
-			
 			$i++;
 			if ($i <= $skip) continue;
+			if (array(null) === $line) continue; // Skip blank line
+			
+			if (mb_detect_encoding($line[1], 'UTF-8', true) != 'UTF-8') $line[1] = utf8_encode($line[1]);
+			if (mb_detect_encoding($line[11], 'UTF-8', true) != 'UTF-8') $line[11] = utf8_encode($line[11]);
+			
+			$amount = price2num($line[4]);
+			$amount = preg_replace('/[^0-9,\.-]/', '', $amount);
 			
 			$TPayment[] = array(
 				'code_client' => !empty($conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR) ? substr($line[0], $conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR-1) : $line[0]
 				,'company_name' => $line[1]
 				,'facture_ref' => $line[2]
 				,'rib' => $line[3]
-				,'amount' => price2num($line[4])
+				,'amount' => $amount
 				,'date_creation' => $line[8]
 				,'num_payment' => $line[10]
 				,'note' => $line[11]
