@@ -80,7 +80,7 @@ function _parseFile(&$conf)
 			$TPayment[] = array(
 				'code_client' => !empty($conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR) ? substr($line[0], $conf->global->PAYMENTIMPORT_CODECLIENT_SUBSTR-1) : $line[0]
 				,'company_name' => $line[1]
-				,'facture_ref' => $line[2]
+				,'facture_ref' => $line[7]
 				,'rib' => $line[3]
 				,'amount' => $amount
 				,'date_creation' => $line[8]
