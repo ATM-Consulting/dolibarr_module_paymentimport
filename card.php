@@ -139,7 +139,8 @@
 		$TFactureNotFound = $_SESSION['TFactureNotFound'];
 		$TPaimentError = $_SESSION['TPaimentError'];
 		$TWriteBankFail = $_SESSION['TWriteBankFail'];
-
+		$TFactureAlreadyPaid = $_SESSION['TFactureAlreadyPaid'];
+		
 		if (!empty($TFactureNotFound))
 		{
 			print '<div class="error" style="padding:2px;">';
@@ -158,6 +159,13 @@
 		{
 			print '<div class="error" style="margin-top:5px;padding:2px;">';
 			foreach ($TWriteBankFail as $error) print $error.'<br />';
+			print '</div>';	
+		}
+
+		if (!empty($TFactureAlreadyPaid))
+		{
+			print '<div class="warning" style="margin-top:5px;padding:2px;">';
+			foreach ($TFactureAlreadyPaid as $warning) print $warning.'<br />';
 			print '</div>';	
 		}
 	}

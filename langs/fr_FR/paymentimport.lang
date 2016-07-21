@@ -33,3 +33,4 @@ paymentimport_errorwritebank=Erreur écriture banque sur la facture : %s
 paymentimport_nb_facture_not_found=Nombre de facture non trouvée : %s
 paymentimport_nb_payment=Nombre de paiment enregistré : %s
 paymentimport_nb_writebank=Nombre d'écriture bancaire : %s
+paymentimport_warningFactureAlreadyPaid=Attention : facture [%s] déjà au statut "Payée", le règlement n'a pas été enregistré
