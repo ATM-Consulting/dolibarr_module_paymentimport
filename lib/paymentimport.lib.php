@@ -124,6 +124,8 @@ function _setPayment($user,$db,$conf,$langs)
 		$facture = new Facture($db);
 		if ($facture->fetch(null, $facture_ref) > 0)
 		{
+			if ($facture->paye) continue; // Sécurité si jamais la facture est déjà payé on ne saisie pas de nouveau règlement
+			
 			if (!empty($conf->global->PAYMENTIMPORT_FORCE_DATE_TODAY)) $datepaye = dol_mktime(date('H'), date('m'), date('s'), date('m'), date('d'), date('Y'));
 			else 
 			{
