@@ -31,7 +31,7 @@
 				break;
 			case 'import_confirm':
 				_setPayment($user,$db,$conf,$langs);
-				header('Location: '.dol_buildpath('/paymentimport/card.php', 2));
+				header('Location: '.dol_buildpath('/paymentimport/card.php', 1));
 				exit;
 				
 				break;
