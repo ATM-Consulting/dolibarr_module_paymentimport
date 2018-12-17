@@ -185,10 +185,10 @@ class modpaymentImport extends DolibarrModules
 		$this->menu = array();			// List of menus to add
 		$r=0;
 		$this->menu[$r]=array(	
-			'fk_menu'=>'fk_mainmenu=accountancy,fk_leftmenu=customers_bills',			                // Put 0 if this is a top menu
+		    'fk_menu'=>'fk_mainmenu='.((float)DOL_VERSION >= 7.0 ? 'billing' : 'accountancy').',fk_leftmenu=customers_bills',			                // Put 0 if this is a top menu
 			'type'=>'left',			                // This is a Top menu entry
 			'titre'=>$langs->trans('PaymentImport'),
-			'mainmenu'=>'customers_bills',
+		    'mainmenu'=>(float)DOL_VERSION >= 7.0 ? 'billing' : 'accountancy',
 			'leftmenu'=>'customers_bills',
 			'url'=>'/paymentimport/card.php',
 			'langs'=>'paymentimport@paymentimport',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
